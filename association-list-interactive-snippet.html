@@ -1,0 +1,242 @@
+<div id="leap-al" style="max-width:1100px;margin:0 auto;color:#14213d;font-family:inherit;">
+<div style="background:linear-gradient(135deg,#14213d 0%,#1f3b73 55%,#0f8b8d 100%);border-radius:18px;padding:34px 26px 28px;color:#fff;margin-bottom:18px;">
+<div style="font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;opacity:.8;margin-bottom:8px;">LEAPodcasts Association List</div>
+<div style="font-size:34px;font-weight:800;line-height:1.15;margin-bottom:10px;">Find your people.</div>
+<div style="font-size:16px;line-height:1.55;max-width:680px;opacity:.92;margin-bottom:20px;">Analysis is a team sport. Tell us what you're looking for and we'll point you to the associations where you can learn, get certified, present your work and meet people who speak your language.</div>
+<label for="leap-q" style="display:block;font-size:13px;font-weight:700;margin-bottom:6px;opacity:.9;">What are you looking for?</label>
+<div style="display:flex;gap:8px;flex-wrap:wrap;">
+<input id="leap-q" type="search" autocomplete="off" placeholder="e.g. &quot;I'm a researcher in Europe interested in crime mapping&quot;" style="flex:1 1 260px;min-width:0;box-sizing:border-box;padding:14px 16px;border-radius:12px;border:2px solid rgba(255,255,255,.35);background:#fff;color:#14213d;font-size:16px;outline:none;">
+<button id="leap-clear" type="button" style="padding:12px 18px;border-radius:12px;border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.12);color:#fff;font-size:14px;font-weight:700;cursor:pointer;">Clear</button>
+</div>
+<div id="leap-ex" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;align-items:center;"><span style="font-size:13px;opacity:.8;">Try:</span></div>
+</div>
+<div id="leap-filters" style="margin-bottom:8px;"></div>
+<div id="leap-status" aria-live="polite" style="font-size:14px;color:#5b6476;margin:6px 0 18px;"></div>
+<div id="leap-results"><p style="color:#5b6476;">Loading the association list…</p></div>
+<div style="background:#f6f8fb;border:1px dashed #b9c2d0;border-radius:14px;padding:20px 22px;text-align:center;margin-top:30px;">
+<div style="font-size:17px;font-weight:800;margin-bottom:4px;">Missing an association?</div>
+<div style="font-size:14px;color:#5b6476;line-height:1.5;">Tell us at <a href="mailto:leapodcasts@gmail.com" style="color:#0f8b8d;font-weight:700;">leapodcasts@gmail.com</a> and we'll add it. <span id="leap-src"></span></div>
+</div>
+</div>
+<script>
+(function(){
+// Live list: the published Google Sheet. Edit the sheet, and the page follows (Google may take ~5 minutes).
+var SHEET_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSurkulhe3G4pVDHp_rAaso03CSTGys6EAjAI30QtX-6q4bkXa37bFsw9tlyf-TmWNOuOYnrYr4D_Bb/pub?gid=1186239277&single=true&output=csv";
+// Primary route: Google's chart-data endpoint, loaded as a script (not blocked by browser cross-site rules).
+// Needs the sheet shared as "anyone with the link can view".
+var SHEET_GVIZ = "https://docs.google.com/spreadsheets/d/1ynjKUM04cmZoqvS-Xx4x7CZm8tDMKzGsjdy1vZDnV_k/gviz/tq?gid=1186239277&headers=1&tqx=out:json;responseHandler:";
+var DATA = [{"n": "Academy of Criminal Justice Sciences", "a": "ACJS", "u": "https://www.acjs.org/", "t": "Both", "r": "americas", "d": "Annual meeting, journals Justice Quarterly, Justice Evaluation Journal, Journal of Criminal Justice Education, specialist sections and regional associations", "p": ""}, {"n": "American Academy of Forensic Sciences", "a": "AAFS", "u": "https://www.aafs.org/", "t": "Practitioners", "r": "americas", "d": "Forensic science research, annual scientific conference, publications, professional standards, continuing education", "p": ""}, {"n": "American Correctional Association", "a": "ACA", "u": "https://www.aca.org/", "t": "Practitioners", "r": "americas", "d": "Correctional standards and accreditation, training, conferences, professional certification, publications", "p": ""}, {"n": "American Probation and Parole Association", "a": "APPA", "u": "https://www.appa-net.org", "t": "Both", "r": "americas", "d": "Training institutes, conferences, evidence-based practices, policy development, publications", "p": ""}, {"n": "American Society of Criminology", "a": "ASC", "u": "https://asc41.org/", "t": "Researchers", "r": "americas", "d": "Annual conference, journals Criminology and Criminology & Public Policy, thematic divisions, policy engagement", "p": ""}, {"n": "American Society of Evidence-Based Policing", "a": "ASEBP", "u": "https://www.americansebp.org", "t": "Both", "r": "americas", "d": "Promotes evidence-based policing through conferences, webinars, journal clubs, practitioner–researcher partnerships", "p": ""}, {"n": "Armed Forces Communications and Electronics Association International", "a": "AFCEA", "u": "https://www.afcea.org/", "t": "Practitioners", "r": "intl", "d": "Conferences, professional networking, cybersecurity, intelligence, defense communications, technology exchange", "p": ""}, {"n": "Asian American Law Enforcement Association", "a": "AALEA", "u": "https://aalea.org/", "t": "Practitioners", "r": "americas", "d": "Leadership development, mentoring, networking, advocacy, scholarships for law enforcement professionals", "p": ""}, {"n": "Asian Criminological Society", "a": "ACS", "u": "https://www.criminology.asia/acs/", "t": "Both", "r": "rest", "d": "Annual ACS conference, Asian Journal of Criminology, regional research networks", "p": ""}, {"n": "ASIS International", "a": "ASIS", "u": "https://www.asisonline.org", "t": "Practitioners", "r": "intl", "d": "Security certifications (CPP, PSP, PCI), standards development, Global Security Exchange (GSX), publications, local chapters", "p": ""}, {"n": "Association of Certified Anti-Money Laundering Specialists", "a": "ACAMS", "u": "https://www.acams.org/en", "t": "Practitioners", "r": "intl", "d": "Anti-money laundering (AML) certification, financial crime training, conferences, webinars, professional networking", "p": ""}, {"n": "Association of Certified Financial Crime Specialists", "a": "ACFCS", "u": "https://www.acfcs.org/", "t": "Practitioners", "r": "intl", "d": "Education and certification covering AML, fraud, corruption, sanctions, cybercrime, and financial investigations", "p": ""}, {"n": "Association of Certified Fraud Examiners", "a": "ACFE", "u": "https://www.acfe.com/", "t": "Practitioners", "r": "intl", "d": "Fraud prevention, investigation training, Certified Fraud Examiner (CFE) credential, conferences, research reports", "p": ""}, {"n": "Association of Crime Intelligence Analysts", "a": "ACIA", "u": "https://www.acia.org.uk/", "t": "Practitioners", "r": "europe", "d": "Crime intelligence analysis training, professional networking, conferences, analytical best practices", "p": ""}, {"n": "Association of European Police Colleges", "a": "AEPC", "u": "https://aepc.net/", "t": "Practitioners", "r": "europe", "d": "Police education, training cooperation", "p": ""}, {"n": "Association of Former Intelligence Officers", "a": "AFIO", "u": "https://www.afio.com/", "t": "Practitioners", "r": "americas", "d": "Intelligence education, publications, speaker events, networking, professional development for the intelligence community", "p": ""}, {"n": "Association of International Predictive Intelligence Officers", "a": "AIPIO", "u": "https://www.aipio.org", "t": "Practitioners", "r": "intl", "d": "Training on predictive policing and intelligence-led policing, conferences, webinars, professional networking", "p": ""}, {"n": "Association of Professional Futurists", "a": "APF", "u": "https://www.apf.org", "t": "Both", "r": "intl", "d": "Conferences, webinars, publications, networking, foresight methods, forecasting", "p": ""}, {"n": "Association of Public-Safety Communications Officials", "a": "APCO", "u": "https://www.apcointl.org", "t": "Practitioners", "r": "intl", "d": "Standards development, certification, training, annual conference, advocacy, publications", "p": ""}, {"n": "Association of State Criminal Investigative Agencies", "a": "ASCIA", "u": "https://www.ascia.us", "t": "Practitioners", "r": "americas", "d": "Collaboration among state investigative agencies, policy development, information sharing, annual meetings", "p": ""}, {"n": "Association of Threat Assessment Professionals", "a": "ATAP", "u": "https://www.atapworldwide.org/", "t": "Both", "r": "intl", "d": "Conferences, certification, training, networking, research dissemination on threat assessment and violence prevention", "p": ""}, {"n": "Australian and New Zealand Society of Criminology", "a": "ANZSOC", "u": "https://anzsoc.org/", "t": "Researchers", "r": "rest", "d": "Annual conference, Journal of Criminology, awards, seminars and workshops", "p": ""}, {"n": "British Society of Criminology", "a": "BSC", "u": "https://www.britsoccrim.org/", "t": "Researchers", "r": "europe", "d": "Annual conference, working groups, policy engagement", "p": ""}, {"n": "California Gang Investigators Association", "a": "CGIA", "u": "https://www.cgia.com", "t": "Practitioners", "r": "americas", "d": "Gang investigation training, annual conference, legislative updates, networking", "p": ""}, {"n": "Campbell Crime & Justice Group", "a": "C&J", "u": "https://www.campbellcollaboration.org", "t": "Both", "r": "intl", "d": "Produces systematic reviews and evidence syntheses on crime, policing, corrections, juvenile justice, and violence prevention", "p": ""}, {"n": "Coalition of Law Enforcement and Retail", "a": "CLEAR", "u": "https://www.clearusa.org", "t": "Practitioners", "r": "intl", "d": "Law enforcement and retail teaming up against organized retail crime, cargo theft and supply-chain crime", "p": ""}, {"n": "Criminological Society of Africa", "a": "CRIMSA", "u": "https://crimsa.ac.za/", "t": "Both", "r": "rest", "d": "Annual conference, African-focused criminology research and victimology, networking", "p": ""}, {"n": "Dutch Society for Criminology", "a": "NvC", "u": "https://www.criminologie.nl", "t": "Both", "r": "europe", "d": "National conferences and workshops, Dutch criminology community building", "p": ""}, {"n": "European Association of Crime Analysts", "a": "EACA", "u": "https://www.crime-analysts.eu/", "t": "Practitioners", "r": "europe", "d": "Annual training conference, webinars, online content (presentations, case studies, best practice), and networking platform for crime analysts", "p": ""}, {"n": "European Crime Prevention Network", "a": "EUCPN", "u": "https://www.eucpn.org/", "t": "Both", "r": "intl", "d": "Crime prevention toolkits, research reviews, campaigns, workshops, policy support", "p": ""}, {"n": "European Network of Forensic Science Institutes", "a": "ENFSI", "u": "https://enfsi.eu", "t": "Practitioners", "r": "europe", "d": "Scientific working groups, harmonization of forensic methods, proficiency testing, research collaboration, training", "p": ""}, {"n": "European Society of Criminology", "a": "ESC", "u": "https://esc-eurocrim.org/v2/", "t": "Researchers", "r": "europe", "d": "Eurocrim annual conference, European Journal of Criminology, working groups, newsletter", "p": ""}, {"n": "Federal Law Enforcement Officers Association", "a": "FLEOA", "u": "https://www.fleoa.org", "t": "Practitioners", "r": "americas", "d": "Advocacy for federal law enforcement officers, legal support, professional development, networking", "p": ""}, {"n": "Florida Gang Investigators Association", "a": "FGIA", "u": "https://www.fgia.org", "t": "Practitioners", "r": "americas", "d": "Gang investigation training, annual conference, intelligence sharing, professional networking, legislative updates", "p": ""}, {"n": "GANG Investigators Association of Nevada", "a": "GIAN", "u": "https://www.gianevada.org", "t": "Practitioners", "r": "americas", "d": "Training, gang intelligence sharing, networking, conferences, support for gang investigators", "p": ""}, {"n": "Georgia Gang Investigators Association", "a": "GGIA", "u": "https://www.ggia.net", "t": "Practitioners", "r": "americas", "d": "Gang investigation training, conferences, intelligence sharing, professional networking", "p": ""}, {"n": "GIS Certification Institute", "a": "GISCI", "u": "https://www.gisci.org", "t": "Both", "r": "intl", "d": "GIS professional certification (GISP), ethics, continuing education, professional standards", "p": ""}, {"n": "High Technology Crime Investigation Association", "a": "HTCIA", "u": "https://www.htcia.org", "t": "Practitioners", "r": "intl", "d": "Cybercrime investigation training, digital evidence, conferences, professional networking", "p": ""}, {"n": "Hispanic American Police Command Officers Association", "a": "HAPCOA", "u": "https://www.hapcoa.org", "t": "Practitioners", "r": "americas", "d": "Leadership development, mentoring, advocacy, networking for Hispanic law enforcement leaders", "p": ""}, {"n": "Human Trafficking Investigators Association", "a": "HTIA", "u": "https://www.htianational.org", "t": "Practitioners", "r": "americas", "d": "Human trafficking investigation training, victim-centered investigative practices, conferences, professional networking, and resources for investigators", "p": ""}, {"n": "Information Systems Security Association", "a": "ISSA", "u": "https://www.issa.org", "t": "Practitioners", "r": "intl", "d": "Cybersecurity education, networking, conferences, local chapters", "p": ""}, {"n": "Intelligence and National Security Alliance", "a": "INSA", "u": "https://www.insaonline.org", "t": "Both", "r": "americas", "d": "Intelligence and national security policy forums, networking, professional development", "p": ""}, {"n": "International Association for Identification", "a": "IAI", "u": "https://www.theiai.org", "t": "Both", "r": "intl", "d": "Forensic identification standards, certification, conferences, professional development", "p": ""}, {"n": "International Association for Intelligence Education", "a": "IAFIE", "u": "https://www.iafie.org", "t": "Both", "r": "intl", "d": "Intelligence education, curriculum development, conferences, research dissemination, networking", "p": ""}, {"n": "International Association of Auto Theft Investigators", "a": "IAATI", "u": "https://www.iaati.org", "t": "Practitioners", "r": "intl", "d": "Auto theft investigation training, intelligence sharing, conferences, professional networking", "p": ""}, {"n": "International Association of Chiefs of Police", "a": "IACP", "u": "https://www.theiacp.org/", "t": "Practitioners", "r": "intl", "d": "Training, policy development, conferences, leadership networks, publications", "p": ""}, {"n": "International Association of Computer Investigative Specialists", "a": "IACIS", "u": "https://www.iacis.com", "t": "Practitioners", "r": "intl", "d": "Digital forensics training, certifications (CFCE), conferences, professional development", "p": ""}, {"n": "International Association of Crime Analysts", "a": "IACA", "u": "https://www.iaca.net/", "t": "Practitioners", "r": "intl", "d": "Training, certification, standards, guidance documents, and networking for crime analysts", "p": ""}, {"n": "International Association of Emergency Managers", "a": "IAEM", "u": "https://www.iaem.org", "t": "Practitioners", "r": "intl", "d": "Emergency management training, certification (CEM), conferences, policy advocacy", "p": ""}, {"n": "International Association of Financial Crimes Investigators", "a": "IAFCI", "u": "https://www.iafci.org", "t": "Practitioners", "r": "intl", "d": "Financial crime investigation training, fraud prevention, intelligence sharing, conferences", "p": ""}, {"n": "International Association of Forensic Sciences", "a": "IAFS", "u": "https://www.theiafs.org", "t": "Both", "r": "intl", "d": "International forensic science congresses, research dissemination, collaboration between forensic scientists and practitioners", "p": ""}, {"n": "International Association of Law Enforcement Intelligence Analysts", "a": "IALEIA", "u": "https://www.ialeia.org", "t": "Practitioners", "r": "intl", "d": "Intelligence analysis training, professional certification, conferences, publications, networking", "p": "https://www.leapodcasts.com/p/ialeia/"}, {"n": "International Association of Law Enforcement Planners", "a": "IALEP", "u": "https://www.ialep.org", "t": "Practitioners", "r": "intl", "d": "Strategic planning, accreditation support, best practices, conferences", "p": ""}, {"n": "International Association of Special Investigation Units", "a": "IASIU", "u": "https://www.iasiu.org", "t": "Practitioners", "r": "intl", "d": "Insurance fraud investigation training, conferences, networking, professional development", "p": ""}, {"n": "International Association of Women Police", "a": "IAWP", "u": "https://www.iawp.org", "t": "Practitioners", "r": "intl", "d": "Leadership development, mentoring, conferences, advocacy for women in policing", "p": ""}, {"n": "International Centre for the Prevention of Crime", "a": "ICPC", "u": "https://cipc-icpc.org/en/home/", "t": "Practitioners", "r": "intl", "d": "Forum for governments and NGOs on crime prevention and community safety: comparative research, technical assistance", "p": ""}, {"n": "International CPTED Association", "a": "ICA", "u": "https://www.cpted.net/", "t": "Practitioners", "r": "intl", "d": "Promotion and development of CPTED, conferences, training and certification, practice guidelines", "p": ""}, {"n": "International Homicide Investigators Association", "a": "IHIA", "u": "https://www.ihia.org", "t": "Practitioners", "r": "intl", "d": "Homicide investigation training, conferences, networking, professional resources", "p": ""}, {"n": "International Information System Security Certification Consortium", "a": "ISC²", "u": "https://www.isc2.org", "t": "Practitioners", "r": "intl", "d": "Cybersecurity certification (e.g., CISSP), training, professional development", "p": ""}, {"n": "International Protective Security Board", "a": "IPSB", "u": "https://www.ipsboard.org", "t": "Practitioners", "r": "intl", "d": "Protective security standards, training, conferences, best practices", "p": ""}, {"n": "International Society of Crime Prevention Practitioners", "a": "ISCPP", "u": "https://www.iscpp.org", "t": "Both", "r": "intl", "d": "Crime prevention specialist (ICPS) certification, education, conferences, evidence-based crime prevention practice", "p": ""}, {"n": "Investigative Genetic Genealogy Accreditation Board", "a": "IGGAB", "u": "https://www.iggab.org", "t": "Practitioners", "r": "intl", "d": "Accreditation standards and certification for investigative genetic genealogy professionals", "p": ""}, {"n": "Investigative Genetic Genealogy Association", "a": "IGGA", "u": "https://www.iggassociation.org", "t": "Both", "r": "intl", "d": "Standards development, education, conferences, networking in investigative genetic genealogy", "p": ""}, {"n": "Justice Information Resource Network", "a": "JIRN", "u": "https://jirn.org/", "t": "Both", "r": "intl", "d": "Research, training, and technical assistance on crime and justice statistics; publications and practitioner guidance", "p": ""}, {"n": "Law Enforcement Intelligence Units", "a": "LEIU", "u": "https://www.leiu.org", "t": "Practitioners", "r": "americas", "d": "Criminal intelligence sharing, training, annual conference, professional networking", "p": ""}, {"n": "Major Cities Chiefs Association", "a": "MCCA", "u": "https://www.majorcitieschiefs.com", "t": "Practitioners", "r": "americas", "d": "Police executive collaboration, policy development, information sharing", "p": ""}, {"n": "Midwest Gang Investigators Association", "a": "MGIA", "u": "https://www.mgia.org", "t": "Practitioners", "r": "americas", "d": "Gang investigation training, conferences, intelligence sharing", "p": ""}, {"n": "National Alliance of Gang Investigators Associations", "a": "NAGIA", "u": "https://www.nagia.org", "t": "Practitioners", "r": "americas", "d": "Gang investigation training, conferences, coordination among gang investigator associations", "p": ""}, {"n": "National Association for Civilian Oversight of Law Enforcement", "a": "NACOLE", "u": "https://www.nacole.org", "t": "Both", "r": "intl", "d": "Civilian oversight training, conferences, research, professional standards", "p": ""}, {"n": "National Association of Professional Staff in Public Safety", "a": "NAPSPS", "u": "https://www.napsps.org", "t": "Practitioners", "r": "americas", "d": "Professional development and networking for civilian public safety staff", "p": "https://www.leapodcasts.com/e/analyst-talk-lean-napsps-ben-haiman/"}, {"n": "National Association of School Resource Officers", "a": "NASRO", "u": "https://www.nasro.org", "t": "Practitioners", "r": "americas", "d": "School safety training, certification of school resource officers, conferences, best practice development, and school-based violence prevention", "p": ""}, {"n": "National Association of State Chief Information Officers", "a": "NASCIO", "u": "https://www.nascio.org", "t": "Practitioners", "r": "americas", "d": "Government IT leadership, cybersecurity, digital government policy, conferences", "p": ""}, {"n": "National Association of Women Law Enforcement Executives", "a": "NAWLEE", "u": "https://www.nawlee.org", "t": "Practitioners", "r": "americas", "d": "Leadership development, mentoring, networking, advocacy", "p": ""}, {"n": "National Center for Missing and Exploited Children", "a": "NCMEC", "u": "https://www.missingkids.org", "t": "Both", "r": "americas", "d": "Child protection, training, research, investigative support, public awareness", "p": ""}, {"n": "National Center for Spectator Sports Safety and Security", "a": "NCS4", "u": "https://www.ncs4.usm.edu", "t": "Both", "r": "americas", "d": "Research, training, risk management, sports venue security", "p": ""}, {"n": "National Crime Prevention Council", "a": "NCPC", "u": "https://www.ncpc.org/", "t": "Practitioners", "r": "americas", "d": "Policy advocacy on federal justice assistance, national forums, webinars, technical assistance", "p": ""}, {"n": "National Criminal Justice Association", "a": "NCJA", "u": "https://www.ncja.org", "t": "Both", "r": "americas", "d": "Criminal justice policy, grants, research dissemination, conferences", "p": ""}, {"n": "National Emergency Number Association", "a": "NENA", "u": "https://www.nena.org", "t": "Practitioners", "r": "intl", "d": "911 standards, emergency communications training, conferences, advocacy", "p": ""}, {"n": "National Homeland Security Association", "a": "NHSA", "u": "https://www.nationalhomelandsecurity.org", "t": "Practitioners", "r": "americas", "d": "Networking and professional development across homeland security, emergency management and public safety", "p": ""}, {"n": "National Incident-Based Reporting System Users Group", "a": "NIBRS", "u": "https://www.nibrsusers.org", "t": "Both", "r": "americas", "d": "Training, best practices, networking for NIBRS crime data users", "p": ""}, {"n": "National Latino Peace Officers Association", "a": "NLPOA", "u": "https://www.nlpoa.com", "t": "Practitioners", "r": "americas", "d": "Leadership, mentoring, advocacy, networking", "p": ""}, {"n": "National Network of Anti-Crime Organizations", "a": "NNOAC", "u": "https://www.nnoac.org", "t": "Both", "r": "americas", "d": "Community crime prevention, public education, networking", "p": ""}, {"n": "National Organization of Black Law Enforcement Executives", "a": "NOBLE", "u": "https://www.noblenational.org", "t": "Practitioners", "r": "americas", "d": "Leadership development, mentoring, policing policy, conferences", "p": ""}, {"n": "National Public Safety Information Bureau", "a": "NPSIB", "u": "https://www.npsib.org", "t": "Practitioners", "r": "americas", "d": "Public safety information sharing, training, resources", "p": ""}, {"n": "National Sheriffs' Association", "a": "NSA", "u": "https://www.sheriffs.org", "t": "Practitioners", "r": "americas", "d": "Law enforcement leadership, training, policy advocacy, conferences", "p": ""}, {"n": "National Technical Investigators Association", "a": "NATIA", "u": "https://www.natia.org", "t": "Practitioners", "r": "americas", "d": "Electronic surveillance, technical investigations, training, conferences", "p": ""}, {"n": "Ohio Gang Investigators Association", "a": "OGIA", "u": "https://www.ogia.org", "t": "Practitioners", "r": "americas", "d": "Gang investigation training, intelligence sharing, conferences", "p": ""}, {"n": "Open Source Intelligence Foundation", "a": "OSINT", "u": "https://www.osintfoundation.org", "t": "Both", "r": "intl", "d": "OSINT education, conferences, research, professional networking", "p": ""}, {"n": "Organized Retail Crime Association", "a": "ORCA", "u": "https://www.orcassociation.org", "t": "Practitioners", "r": "americas", "d": "Prevention and investigation of organized retail crime through training, conferences, intelligence sharing, and partnerships between retailers and law enforcement", "p": ""}, {"n": "Police Executive Research Forum", "a": "PERF", "u": "https://www.policeforum.org", "t": "Both", "r": "americas", "d": "Policing research, executive leadership, policy development, publications", "p": ""}, {"n": "Real-Time Crime Center Association", "a": "RTCCA", "u": "https://www.realtimecrimecenter.org", "t": "Practitioners", "r": "intl", "d": "Best practices, conferences, networking, technology for real-time crime centers", "p": ""}, {"n": "SANS Institute", "a": "SANS", "u": "https://www.sans.org", "t": "Practitioners", "r": "intl", "d": "Cybersecurity training, certifications, digital forensics education", "p": ""}, {"n": "Society of Evidence Based Policing", "a": "SEBP", "u": "https://www.sebp.police.uk/", "t": "Practitioners", "r": "europe", "d": "UK charity promoting evidence-based policing: members' hub, training, research articles and an annual conference", "p": ""}, {"n": "South Asian Society of Criminology and Victimology", "a": "SASCV", "u": "https://www.sascv.org/", "t": "Both", "r": "rest", "d": "Regional conferences, workshops, publications, network on criminology and victimology in South Asia", "p": ""}, {"n": "Texas Gang Investigators Association", "a": "TGIA", "u": "https://www.tgia.org", "t": "Practitioners", "r": "americas", "d": "Gang investigation training, conferences, intelligence sharing", "p": ""}, {"n": "United States Geospatial Intelligence Foundation", "a": "USGIF", "u": "https://usgif.org", "t": "Both", "r": "intl", "d": "Geospatial intelligence education, scholarships, conferences, workforce development", "p": ""}, {"n": "Urban and Regional Information Systems Association", "a": "URISA", "u": "https://urisa.org", "t": "Both", "r": "intl", "d": "GIS education, conferences, professional certification, geospatial best practices", "p": ""}, {"n": "Women Leaders in Law Enforcement Foundation", "a": "WLLE", "u": "https://www.wlle.org", "t": "Practitioners", "r": "americas", "d": "Leadership development, mentoring, networking for women in law enforcement", "p": ""}];   // saved copy, used only if the sheet can't be reached
+var SOURCE = "saved", SRCNOTE = "Loading the live list…";
+var C = {ink:"#14213d", muted:"#5b6476", line:"#e3e7ee"};
+var AUD = {Practitioners:["#0f8b8d","#e3f4f4","Practitioners"], Researchers:["#7b3fbf","#f1e9fa","Researchers"], Both:["#e07a1f","#fdf0e3","Research & Practice"]};
+var REG = [["all","All regions"],["intl","🌐 International"],["americas","🌎 The Americas"],["europe","🇪🇺 Europe"],["rest","🌏 Asia, Africa & Oceania"]];
+var AUDF = [["all","Everyone"],["Practitioners","For practitioners"],["Researchers","For researchers"]];
+var REGTITLE = {intl:"🌐 International", americas:"🌎 The Americas", europe:"🇪🇺 Europe", rest:"🌏 Asia, Africa & Oceania"};
+
+// words in a prompt that set a filter instead of being searched for
+var REGWORDS = {intl:["international","global","worldwide","world"],
+  americas:["america","americas","american","usa","u.s.","states","canada","canadian","latin","mexico"],
+  europe:["europe","european","eu","uk","britain","british","england","dutch","netherlands","belgium","belgian"],
+  rest:["asia","asian","africa","african","oceania","australia","australian","zealand","india"]};
+var AUDWORDS = {Researchers:["researcher","researchers","academic","academics","scholar","scholars","phd","professor","lecturer","student","students","university"],
+  Practitioners:["practitioner","practitioners","officer","officers","cop","cops","detective","detectives","investigator","investigators","agency"]};
+// synonyms so a short prompt still finds the right groups
+var SYN = {
+  money:["aml","laundering","financial"], laundering:["aml","financial"], aml:["laundering","financial"],
+  fraud:["fraud","financial","insurance"], finance:["financial","aml","fraud"], financial:["fraud","aml"],
+  cyber:["cybersecurity","cybercrime","digital","computer"], cybersecurity:["cyber","digital","security"], hacking:["cybercrime","cybersecurity","digital"],
+  digital:["digital","computer","cybercrime"], computer:["digital","cybercrime"],
+  map:["gis","geospatial","mapping"], mapping:["gis","geospatial"], spatial:["gis","geospatial"], gis:["geospatial","gis"], geography:["gis","geospatial"],
+  gang:["gang","gangs"], gangs:["gang"],
+  forensic:["forensic","forensics","identification"], forensics:["forensic"], dna:["genetic","genealogy","forensic"], genetics:["genetic","genealogy"],
+  prevention:["prevention","cpted"], cpted:["environmental","prevention"], design:["cpted","environmental"],
+  prison:["correctional","corrections","probation","parole"], prisons:["correctional","corrections"], corrections:["correctional","probation","parole"], probation:["parole","correctional"],
+  police:["policing","police","law","enforcement"], policing:["police","policing","law","enforcement"], cops:["police","policing"],
+  evidence:["evidence-based","systematic","evidence"], research:["research","journal","journals","reviews"], journal:["journal","journals"], publish:["journal","journals","publications"], academic:["journal","research"],
+  conference:["conference","conferences","annual"], conferences:["conference"], meet:["conference","networking"], network:["networking","network"], networking:["networking"],
+  certification:["certification","certified","credential","certifications"], certified:["certification","credential"], certificate:["certification"], training:["training","course","education"], course:["training","education"],
+  intelligence:["intelligence","intelligence-led","osint"], osint:["open","intelligence"], terrorism:["homeland","security","national"], homeland:["homeland","security"],
+  trafficking:["trafficking"], child:["child","missing","school"], children:["child","missing","school"], school:["school","schools"],
+  dispatch:["911","communications","emergency"], "911":["emergency","communications"], emergency:["emergency","911"],
+  retail:["retail","shoplifting"], shoplifting:["retail"], theft:["theft","retail","auto"], car:["auto"], vehicle:["auto"],
+  women:["women"], leadership:["leadership","executive","executives","leaders","chiefs"], leaders:["leadership","executive"], chief:["chiefs","executive"],
+  threat:["threat","violence"], violence:["violence","homicide","threat"], murder:["homicide"], homicide:["homicide"],
+  oversight:["oversight","civilian"], accountability:["oversight","civilian"], data:["data","statistics","analysts","analysis"], statistics:["statistics","data"],
+  analyst:["analysts","analysis","analytical"], analysts:["analysis","analytical","analyst"], analysis:["analysts","analytical"], crime:["crime"],
+  futures:["foresight","forecasting"], forecasting:["predictive","foresight"], prediction:["predictive","forecasting"], predictive:["predictive","forecasting"],
+  victims:["victimology","victim-centered"], victimology:["victimology"], criminology:["criminology","criminological"], security:["security","protective"]
+};
+var STOP = "a an and are as at be by for from i im i'm in into interested interest is it looking me my of on or our please show some that the their them they this to want we who with work working would like about find any help need groups group association associations organisation organisations organization organizations people someone".split(" ");
+
+function norm(s){return s.toLowerCase().replace(/[’']/g,"'").replace(/[^a-z0-9'\-&. ]+/g," ");}
+function prep(list){
+  list.forEach(function(d){
+    d._name = norm(d.n+" "+d.a).split(/\s+/);
+    d._desc = norm(d.d).split(/[\s,;:()]+/);});
+  list.sort(function(a,b){return a.n.toLowerCase()<b.n.toLowerCase()?-1:1;});
+  return list;}
+prep(DATA);
+
+// --- reading the sheet ---
+function parseCSV(text){
+  var rows=[], row=[], f="", q=false;
+  for (var i=0;i<text.length;i++){
+    var c=text[i];
+    if (q){ if (c==='"'){ if (text[i+1]==='"'){f+='"';i++;} else q=false; } else f+=c; }
+    else if (c==='"') q=true;
+    else if (c===','){ row.push(f); f=""; }
+    else if (c==='\n'){ row.push(f); rows.push(row); row=[]; f=""; }
+    else if (c!=='\r') f+=c;
+  }
+  if (f!=="" || row.length){ row.push(f); rows.push(row); }
+  return rows;}
+var REGMAP = {"international":"intl","the americas":"americas","americas":"americas","europe":"europe","asia":"rest","africa":"rest","oceania":"rest"};
+function fromSheet(text){ return fromRows(parseCSV(text)); }
+function fromGviz(resp){
+  if (!resp || resp.status==="error" || !resp.table) return null;
+  var t=resp.table, head=t.cols.map(function(c){return c.label||"";});
+  var rows=[head].concat(t.rows.map(function(r){return (r.c||[]).map(function(c){return c && c.v!=null ? String(c.v) : "";});}));
+  return fromRows(rows);}
+function fromRows(rows){
+  if (!rows || rows.length<2) return null;
+  var h=rows[0].map(function(x){return x.trim().toLowerCase();});
+  function col(name){return h.indexOf(name);}
+  var ci={n:col("association name"),a:col("abbreviation"),u:col("website"),t:col("main target audience"),r:col("main geographical scope"),d:col("main activities"),p:col("podcast link")};
+  if (ci.n<0 || ci.u<0) return null;
+  var out=[];
+  rows.slice(1).forEach(function(r){
+    function g(k){return ci[k]>=0 && r[ci[k]]!=null ? r[ci[k]].trim() : "";}
+    if (!g("n")) return;
+    var t=g("t"); t = /^res/i.test(t) ? "Researchers" : /^prac/i.test(t) ? "Practitioners" : "Both";
+    var u=g("u"); if (u && !/^https?:\/\//i.test(u)) u="https://"+u;
+    out.push({n:g("n"), a:g("a"), u:u, t:t, r:REGMAP[g("r").toLowerCase()]||"intl", d:g("d"), p:g("p")});});
+  return out.length ? out : null;}
+function wordHit(term, words){
+  for (var i=0;i<words.length;i++){var w=words[i]; if(!w) continue;
+    if (w===term) return 2;
+    if (term.length>=4 && w.length>=4 && (w.indexOf(term)===0 || term.indexOf(w)===0)) return 1.5;}
+  return 0;}
+// rare words (e.g. "women") count for more than everywhere-words (e.g. "police", "training")
+var IDF = {};  // reset whenever the list is replaced
+function idf(w){
+  if (IDF[w]==null){ var df=0; DATA.forEach(function(d){ if (wordHit(w,d._name)||wordHit(w,d._desc)) df++; });
+    IDF[w] = df ? Math.log(1 + DATA.length/df) : 0; }
+  return IDF[w];}
+function score(d, terms){
+  var s=0, hits=0;
+  terms.forEach(function(t){
+    var n = wordHit(t.w, d._name), e = wordHit(t.w, d._desc);
+    var best = Math.max(n*2, e) * t.weight * idf(t.w);
+    if (best>0) hits += t.weight;
+    s += best;});
+  return s>0 ? s * (1 + 0.25*hits) : 0;}
+
+var state = {q:"", region:"all", aud:"all", auto:{}};
+function parse(q){
+  var toks = norm(q).split(/\s+/).filter(Boolean), terms=[], region=null, aud=null;
+  toks.forEach(function(t){
+    t = t.replace(/^[.\-]+|[.\-]+$/g,"");
+    if(!t || STOP.indexOf(t)>=0) return;
+    for (var r in REGWORDS) if (REGWORDS[r].indexOf(t)>=0){ region=r; return; }
+    for (var a in AUDWORDS) if (AUDWORDS[a].indexOf(t)>=0){ aud=a; return; }
+    terms.push({w:t, weight:1});
+    (SYN[t]||[]).forEach(function(x){ if(x!==t) terms.push({w:x, weight:0.6}); });
+  });
+  return {terms:terms, region:region, aud:aud};}
+
+function el(tag, style, html){var e=document.createElement(tag); if(style) e.style.cssText=style; if(html!=null) e.innerHTML=html; return e;}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+function chip(label, on, color){
+  return "display:inline-block;padding:7px 14px;border-radius:999px;font-size:13px;font-weight:700;cursor:pointer;margin:0 6px 8px 0;font-family:inherit;"+
+    (on ? "background:"+(color||C.ink)+";color:#fff;border:1px solid "+(color||C.ink)+";" : "background:#f6f8fb;color:"+C.ink+";border:1px solid "+C.line+";");}
+
+function card(d){
+  var A=AUD[d.t]||AUD.Both;
+  return '<div style="background:#fff;border:1px solid '+C.line+';border-top:4px solid '+A[0]+';border-radius:12px;padding:16px 16px 14px;min-width:0;box-shadow:0 1px 3px rgba(20,33,61,.06);display:flex;flex-direction:column;">'+
+   '<div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px 8px;margin-bottom:8px;"><span style="font-size:20px;font-weight:800;color:'+A[0]+';letter-spacing:.5px;line-height:1;">'+esc(d.a||d.n.split(" ")[0])+'</span>'+
+   '<span style="display:inline-block;padding:3px 10px;border-radius:999px;background:'+A[1]+';color:'+A[0]+';font-size:12px;font-weight:600;white-space:nowrap;">'+A[2]+'</span></div>'+
+   '<div style="font-size:15px;font-weight:700;color:'+C.ink+';line-height:1.3;margin-bottom:6px;">'+esc(d.n)+'</div>'+
+   '<div style="font-size:13.5px;color:'+C.muted+';line-height:1.5;flex-grow:1;">'+esc(d.d)+'</div><div>'+
+   (d.p?'<a href="'+d.p+'" target="_top" style="display:inline-block;margin-top:10px;margin-right:14px;font-size:13px;font-weight:700;color:#c0392b;text-decoration:none;">🎧 On the podcast</a>':'')+
+   '<a href="'+esc(d.u)+'" target="_blank" rel="noopener" style="display:inline-block;margin-top:10px;font-size:13px;font-weight:700;color:'+C.ink+';text-decoration:none;border-bottom:2px solid '+A[0]+';">Visit website &#8599;</a></div></div>';}
+function grid(items){return '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;">'+items.map(card).join("")+'</div>';}
+
+var root=document.getElementById("leap-al"), qEl=document.getElementById("leap-q");
+function renderFilters(){
+  var f=document.getElementById("leap-filters"), h='<div style="display:flex;flex-wrap:wrap;align-items:center;"><span style="font-size:13px;font-weight:700;color:'+C.muted+';margin:0 8px 8px 0;">Region:</span>';
+  REG.forEach(function(r){h+='<button type="button" data-region="'+r[0]+'" style="'+chip(r[1], state.region===r[0])+'">'+r[1]+'</button>';});
+  h+='</div><div style="display:flex;flex-wrap:wrap;align-items:center;"><span style="font-size:13px;font-weight:700;color:'+C.muted+';margin:0 8px 8px 0;">Audience:</span>';
+  AUDF.forEach(function(a){var col=a[0]==="all"?null:AUD[a[0]][0]; h+='<button type="button" data-aud="'+a[0]+'" style="'+chip(a[1], state.aud===a[0], col)+'">'+a[1]+'</button>';});
+  f.innerHTML=h+'</div>';}
+function passes(d){
+  if (state.region!=="all" && d.r!==state.region) return false;
+  if (state.aud!=="all" && d.t!==state.aud && d.t!=="Both") return false;
+  return true;}
+function render(){
+  renderFilters();
+  var src=document.getElementById("leap-src"); if(src) src.textContent = SOURCE==="live" ? "The list updates automatically." : SRCNOTE;
+  var p=parse(state.q), out=document.getElementById("leap-results"), st=document.getElementById("leap-status");
+  var pool=DATA.filter(passes);
+  var note = (state.auto.region||state.auto.aud) ? ' <span style="color:#0f8b8d;font-weight:600;">(filters set from your search)</span>' : '';
+  if (!p.terms.length){
+    st.innerHTML='Showing <b>'+pool.length+'</b> of '+DATA.length+' associations'+note+'.';
+    var h=''; ["intl","americas","europe","rest"].forEach(function(r){
+      var it=pool.filter(function(d){return d.r===r;}); if(!it.length) return;
+      h+='<div style="margin:0 0 30px;"><div style="display:flex;align-items:baseline;flex-wrap:wrap;gap:10px;border-bottom:2px solid '+C.ink+';padding-bottom:8px;margin-bottom:14px;"><span style="font-size:22px;font-weight:800;">'+REGTITLE[r]+'</span><span style="font-size:14px;font-weight:600;color:'+C.muted+';">'+it.length+'</span></div>'+grid(it)+'</div>';});
+    out.innerHTML=h||'<p style="color:'+C.muted+';">Nothing matches these filters.</p>'; return;}
+  function rank(items){return items.map(function(d){return [score(d,p.terms),d];}).filter(function(x){return x[0]>0;}).sort(function(a,b){return b[0]-a[0];});}
+  var ranked=rank(pool);
+  if (!ranked.length && (state.region!=="all" || state.aud!=="all")){
+    // nothing inside the filters: widen the search instead of showing an empty page
+    var wide=rank(DATA);
+    if (wide.length){
+      st.innerHTML='Nothing in the selected filters matches <b>“'+esc(state.q)+'”</b>, so here are the closest matches from the whole list.';
+      out.innerHTML='<div style="font-size:20px;font-weight:800;margin:0 0 12px;">✨ Closest matches</div>'+grid(wide.slice(0,9).map(function(x){return x[1];}));
+      return;}}
+  if (!ranked.length){
+    st.innerHTML='No associations match <b>“'+esc(state.q)+'”</b>'+note+'. Try a broader word (e.g. “fraud”, “mapping”, “research”) or reset the filters.';
+    out.innerHTML=''; return;}
+  var top=ranked[0][0], cut=Math.max(3, ranked.filter(function(x){return x[0]>=top*0.35;}).length), strong=ranked.slice(0,cut), rest=ranked.slice(cut);
+  st.innerHTML='<b>'+ranked.length+'</b> association'+(ranked.length>1?'s':'')+' match <b>“'+esc(state.q)+'”</b>'+note+'.';
+  var h='<div style="font-size:20px;font-weight:800;margin:0 0 12px;">✨ Best matches</div>'+grid(strong.map(function(x){return x[1];}));
+  if (rest.length) h+='<div style="font-size:16px;font-weight:800;margin:28px 0 12px;color:'+C.muted+';">Also worth a look</div>'+grid(rest.map(function(x){return x[1];}));
+  out.innerHTML=h;}
+
+var t=null;
+function onQuery(){
+  state.q=qEl.value.trim();
+  var p=parse(state.q);
+  // a region/audience mentioned in the prompt sets the filter; removing it releases the filter
+  if (p.region){ state.region=p.region; state.auto.region=true; } else if (state.auto.region){ state.region="all"; state.auto.region=false; }
+  if (p.aud){ state.aud=p.aud; state.auto.aud=true; } else if (state.auto.aud){ state.aud="all"; state.auto.aud=false; }
+  render();}
+qEl.addEventListener("input", function(){ clearTimeout(t); t=setTimeout(onQuery,150); });
+document.getElementById("leap-clear").addEventListener("click", function(){ qEl.value=""; state={q:"",region:"all",aud:"all",auto:{}}; render(); qEl.focus(); });
+root.addEventListener("click", function(e){
+  var b=e.target.closest("button"); if(!b) return;
+  if (b.dataset.region){ state.region=b.dataset.region; state.auto.region=false; render(); }
+  if (b.dataset.aud){ state.aud=b.dataset.aud; state.auto.aud=false; render(); }
+  if (b.dataset.ex){ qEl.value=b.dataset.ex; onQuery(); }});
+var ex=document.getElementById("leap-ex");
+["money laundering","researcher in Europe","crime mapping","gangs","digital forensics","women in policing"].forEach(function(s){
+  ex.insertAdjacentHTML("beforeend",'<button type="button" data-ex="'+s+'" style="padding:5px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.12);color:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;">'+s+'</button>');});
+render();
+try{ if (window.top!==window.self){ var bk=document.getElementById("leap-back"); if(bk) bk.style.display="none"; } }catch(e){}
+function useLive(list){ DATA=prep(list); IDF={}; SOURCE="live"; render(); }
+function fail(why){ SRCNOTE = "(Showing a saved copy: the live sheet could not be loaded — " + why + ")"; render(); }
+function viaCSV(prevErr){
+  if (!window.fetch) return fail(prevErr);
+  fetch(SHEET_CSV, {cache:"no-store"}).then(function(r){ if(!r.ok) throw new Error("HTTP "+r.status); return r.text(); })
+  .then(function(txt){ var live=fromSheet(txt); if(!live) throw new Error("empty sheet"); useLive(live); })
+  .catch(function(err){ fail(prevErr + "; " + (err && err.message ? err.message : err)); });}
+(function viaGviz(){
+  var cb="leapSheet"+Date.now(), done=false, sc=document.createElement("script");
+  var timer=setTimeout(function(){ if(!done){ done=true; viaCSV("sheet timed out"); } }, 8000);
+  window[cb]=function(resp){ if(done) return; done=true; clearTimeout(timer);
+    var live=fromGviz(resp); if(live) useLive(live); else viaCSV("sheet returned no rows"); };
+  sc.onerror=function(){ if(done) return; done=true; clearTimeout(timer); viaCSV("sheet script blocked"); };
+  sc.src=SHEET_GVIZ+cb+"&_="+Date.now();
+  document.body.appendChild(sc);
+})();
+})();
+</script>
